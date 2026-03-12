@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 import chatRoute from "./routes/chat.js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
@@ -29,6 +30,11 @@ app.use("/chat", chatRoute);
 app.get("/", (req, res) => {
   res.send("VIIT Chatbot Backend is running!");
 });
+
+// connect to MongoDB
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log("MongoDB connected! ✅"))
+  .catch((err) => console.error("MongoDB error:", err.message));
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
