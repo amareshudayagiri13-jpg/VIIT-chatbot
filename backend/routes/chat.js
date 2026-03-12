@@ -12,7 +12,6 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ error: "No messages provided" });
     }
 
-    // fetch real VIIT data from MongoDB
     const collegeData = await CollegeInfo.find({});
     const context = collegeData.map(item =>
       `${item.category}: ${JSON.stringify(item.data)}`
@@ -38,21 +37,14 @@ router.post("/", async (req, res) => {
       Be friendly, concise and accurate.`
     });
 
-    const chat = model.startChat({
-      history: messages.slice(0, -1).map((m) => ({
-        role: m.role === "assistant" ? "model" : "user",
-        parts: [{ text: m.content }],
-      })),
-    });
-
     const lastMessage = messages[messages.length - 1].content;
-    const result = await chat.sendMessage(lastMessage);
+    const result = await model.generateContent(lastMessage);
     const reply = result.response.text();
 
     res.json({ reply });
 
   } catch (error) {
-    console.error("Gemini error:", error);
+    console.error("Gemini error:", error.message);
     res.status(500).json({ error: error.message });
   }
 });
