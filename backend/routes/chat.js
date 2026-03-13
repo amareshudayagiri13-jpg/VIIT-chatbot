@@ -9,6 +9,8 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 function detectTopic(question) {
   const q = question.toLowerCase();
 
+  if (q.match(/ecet|diploma|lateral|polytechnic/))
+    return 'ecet_ranks';
   if (q.match(/eapcet|cutoff|rank|closing|opening|oc|bc|sc|st/))
     return 'eapcet_ranks';
   if (q.match(/place|job|company|salary|package|recruit|tcs|infosys|wipro|lpa/))
@@ -68,11 +70,12 @@ router.post('/chat', async (req, res) => {
       3. Be friendly, helpful and use emojis
       4. Keep answer clear and concise
       5. If asked about specific category/branch, show only that data
-      6. Always end with "For more info contact: helpdesk@viit.ac.in"
+      6. If any value is "Not Available", display it as "Not Available"
+      7. Always end with "For more info contact: helpdesk@viit.ac.in"
     `;
 
     // Step 4: Send to Gemini
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
     const result = await model.generateContent(prompt);
     const answer = result.response.text();
 
