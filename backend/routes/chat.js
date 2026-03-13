@@ -17,8 +17,10 @@ function detectTopic(question) {
     return 'placements';
   if (q.match(/hostel|room|stay|mess|food|accommodation/))
     return 'hostel';
-  if (q.match(/bus|transport|route|pickup|drop|commute/))
-    return 'bus_routes';
+  if (q.match(/bus|transport|route|pickup|drop|commute|boarding|fare|busfee|busstop|boarding point|anakapalli|car shed|hanummanthwaka|iskatothia|maddilapalem|gbrudwar|benadu|mvp|jagadhamba|rtc|seethamadhara|ntpc|bcroad|birla|gopalapatham|kanchara|murali nagar|pedhagantyada|pujnab|lenkala|steel plant|rbj|nad junction|baji|pendurthi|scindya|makapuram|parawada|gajuwaka|kakki|airport|desipatri|mushrivada|sujathna|krishnaraj|shimachalam|autogar|bhpv|cdr|kurmam|naithaya|old gajuwaka|panthulagari|rk hospital|srinagar|vadlapudi|vepagunta|srihariburam|naidutotha|akkaypalem|tatechatla|dondavarthi|rlv|srisapalli|coramandal|sheelangar|rajiv nagar|fakeertakiya/))
+    return 'buses';
+  if (q.match(/library|book|volume|title|journal|magazine|ebook|ejournal|cd|reading/))
+    return 'libraries';
   if (q.match(/fest|event|cultural|techfest|sports|annual|tarang/))
     return 'fests';
   if (q.match(/branch|course|cse|ece|civil|mech|mba|mca|btech|mtech|it|aiml|ds/))
@@ -75,7 +77,7 @@ router.post('/chat', async (req, res) => {
     `;
 
     // Step 4: Send to Gemini
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     const result = await model.generateContent(prompt);
     const answer = result.response.text();
 
